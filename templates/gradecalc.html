@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/styles.css">
+	<title>Grade Calculator</title>
+    <!-- Include PyScript -->
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+</head>
+<body>
+	<header>
+      <nav aria-label="Main Navigation">
+         <div class="logo">rhythm</div>
+         <ul class="nav-menu">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="projects.html" class="active">Projects</a></li>
+         </ul>
+         <div class="menu-toggle" aria-label="Toggle menu">
+            &#9776;
+         </div>
+      </nav>
+   </header>
+    <form id="gradeForm">
+        <h1>Grade Calculator</h1>
+        <label for="prelim">Enter the Prelim Grade:</label>
+        <input type="number" id="prelim" name="prelim" step="0.01" min="0" max="100" required>
+        <button type="button" id="calculateBtn">Calculate</button>
+
+        <!-- Result section with ul and li tags -->
+        <div id="result" class="result">
+            <ul>
+                <li><strong>Prelim Grade:</strong> <span id="prelimGrade"></span></li>
+                <li><strong>Required Midterm Grade:</strong> <span id="midtermGrade"></span></li>
+                <li><strong>Required Final Grade:</strong> <span id="finalGrade"></span></li>
+                <li id="passMessage"></li>
+                <li id="deansMessage"></li>
+            </ul>
+        </div>
+    </form>
+
+    <py-script>
+        from pyscript import Element
+
+        def calculate_grade(event):
+            try:
+                prelim = float(Element("prelim").element.value)
+            except ValueError:
+                Element("result").element.style.display = "block"
+                Element("result").write("Please enter a valid prelim grade.")
+                return
+
+            passing_grade = 75
+            deans_lister_grade = 90
+            prelim_percent = 0.20
+            midterm_percent = 0.30
+            final_percent = 0.50
+
+            # Check if prelim grade is valid
+            if prelim < 0 or prelim > 100:
+                Element("result").element.style.display = "block"
+                Element("result").write("Please enter a valid prelim grade between 0 and 100.")
+                return
+
+            # Calculate the required midterm and final grades to pass
+            current_total = prelim * prelim_percent
+            required_total = passing_grade - current_total
+
+            if required_total > 0:
+                required_midterm_and_final = required_total / (midterm_percent + final_percent)
+                
+                # Determine the pass message
+                pass_message = (
+                    "It is difficult to pass, as the required grades are very high."
+                    if required_midterm_and_final > 90
+                    else "You have a chance to pass!"
+                )
+            else:
+                required_midterm_and_final = 0
+                pass_message = "Your current grade is high enough to pass!"
+
+            # Calculate the required midterm and final grades for Dean's Lister
+            if prelim >= deans_lister_grade:
+                deans_message = "You already qualify for Dean's Lister based on your Prelim grade!"
+            else:
+                required_deans_total = deans_lister_grade - current_total
+                required_deans_midfinal = required_deans_total / (midterm_percent + final_percent)
+                if required_deans_midfinal > 100:
+                    deans_message = "The required grade is above 100%."
+                else:
+                    deans_message = (
+                        f"The required grade for you to be a Dean’s Lister is "
+                        f"{required_deans_midfinal:.2f}% (midterm) and {required_deans_midfinal:.2f}% (finals)."
+                    )
+
+            # Update the content of the result elements
+            Element("prelimGrade").element.innerHTML = f"{prelim:.2f}%"
+            Element("midtermGrade").element.innerHTML = f"{required_midterm_and_final:.2f}%"
+            Element("finalGrade").element.innerHTML = f"{required_midterm_and_final:.2f}%"
+            Element("passMessage").element.innerHTML = pass_message
+            Element("deansMessage").element.innerHTML = deans_message
+
+            # Show the result section
+            Element("result").element.style.display = "block"
+
+        # Attach the event listener to the button
+        Element("calculateBtn").element.onclick = calculate_grade
+    </py-script>
+</body>
+</html>

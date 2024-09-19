@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Home</title>
+   <link rel="stylesheet" href="static/css/styles.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+   <header>
+      <nav aria-label="Main Navigation">
+         <div class="logo">rhythm</div>
+         <ul class="nav-menu">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="templates/projects.html">Projects</a></li>
+         </ul>
+         <div class="menu-toggle" aria-label="Toggle menu">
+            &#9776;
+         </div>
+      </nav>
+   </header>
+   
+   <main>
+      <div class="profile-container">
+         <div class="profile-image" aria-label="Profile picture" role="img">
+            <img src="static/img/img1.jpg" alt="Profile picture of Ryan">
+         </div>
+         <div class="content">
+            <h1>Hi, I'm <span>Ryan</span></h1>
+            <h2>I'm a <span>Web Designer</span></h2>
+            <p>I am a versatile web designer and game developer with expertise in both front-end and back-end programming. Proficient in Java, HTML, PHP, MSSQL databases, C++, and Python, I create engaging and functional web and game applications. My skills in these technologies enable me to design visually appealing interfaces and develop robust, dynamic systems.
+			</p>
+            <div class="social-icons">
+                <a href="#" class="icon linkedin" aria-label="LinkedIn">
+                   <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="#" class="icon github" aria-label="GitHub">
+                   <i class="fab fa-github"></i>
+                </a>
+                <a href="#" class="icon twitter" aria-label="Twitter">
+                   <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="icon instagram" aria-label="Instagram">
+                   <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+             
+<!-- Button -->
+<button class="buymeacoffee" onclick="openModal()">Buy me a Coffee</button>
+
+<!-- Modal -->
+<div id="coffeeModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <p>If you’d like to support me, you can send a coffee donation to:</p>
+        <div class="payment-options">
+            <div class="payment-option">
+                <img src="static/img/path-to-paypal-logo.png" alt="PayPal Logo" class="payment-logo">
+                <p>PayPal: <strong>rycanano@gmail.com</strong></p>
+            </div>
+            <div class="payment-option">
+                <img src="static/img/path-to-gcash-logo.png" alt="GCash Logo" class="payment-logo">
+                <p>GCash: <strong>09279364405</strong></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+         </div>
+      </div>
+   </main>
+   
+   <!-- External JavaScript -->
+    <script src="static/js/script.js"></script>
+</body>
+</html>

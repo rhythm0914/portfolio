@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Calculator</title>
+    <!-- Include PyScript -->
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        input {
+            margin: 8px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        button {
+            margin: 8px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #00bcd4; /* Cyan color */
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0097a7; /* Darker cyan on hover */
+        }
+
+        p {
+            font-size: 18px;
+            font-weight: bold;
+            display: none; /* Hide result initially */
+        }
+
+        .failed {
+            color: red; /* Red color for failure */
+        }
+
+        .passed {
+            color: green; /* Green color for pass */
+        }
+    </style>
+</head>
+<body>
+	<div>
+    <!-- HTML elements for user input -->
+    <input type="number" id="attendance" placeholder="Attendance" />
+    <input type="number" id="recitation" placeholder="Recitation" />
+    <input type="number" id="quiz" placeholder="Quiz" />
+    <input type="number" id="requirements" placeholder="Requirements" />
+    <input type="number" id="prelim_exam" placeholder="Prelim Exam" />
+    <button id="calculateButton">Calculate Grades</button>
+    <button id="populateButton">Generate Sample</button>
+    <p id="result"></p>
+	</div>
+    <!-- PyScript code -->
+    <py-script>
+        from pyscript import Element
+
+        def calculate_grades(event):
+            try:
+                # Get values from inputs
+                attendance = float(Element("attendance").element.value) * 0.1
+                recitation = float(Element("recitation").element.value) * 0.4
+                quiz = float(Element("quiz").element.value) * 0.3
+                requirements = float(Element("requirements").element.value) * 0.3
+                prelim_exam = float(Element("prelim_exam").element.value) * 0.6
+
+                # Calculate performance task and overall performance
+                performance_task = recitation + quiz + requirements
+                overall_performance = performance_task * 0.3
+
+                # Calculate final grade
+                prelim_grade = round(attendance + overall_performance + prelim_exam, 2)
+
+                # Determine result styling
+                result_element = Element("result").element
+                if float(Element("attendance").element.value) <= 60:
+                    result_element.className = "failed"
+                    result_text = f"Your Prelim Grade is: {prelim_grade:.2f} - Failed due to an excessive number of absences."
+                else:
+                    result_element.className = "passed"
+                    result_text = f"Your Prelim Grade is: {prelim_grade:.2f} - PASSED"
+
+                # Update the content of the result element
+                Element("result").write(result_text)
+
+                # Show the result section
+                result_element.style.display = "block"
+            except ValueError:
+                Element("result").write("Invalid input. Please enter numbers only.")
+                Element("result").element.style.display = "block"
+
+        def populate_inputs(event):
+            # Set predefined values
+            Element("attendance").element.value = 60
+            Element("recitation").element.value = 100
+            Element("quiz").element.value = 95
+            Element("requirements").element.value = 90
+            Element("prelim_exam").element.value = 80
+
+        # Attach event listeners to the buttons
+        Element("calculateButton").element.onclick = calculate_grades
+        Element("populateButton").element.onclick = populate_inputs
+    </py-script>
+</body>
+</html>
